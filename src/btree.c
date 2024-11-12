@@ -46,15 +46,16 @@ void insert(Node** root, int data) {
     return;
 }
 
-int main() {
-    Node* root = NULL;
+// int main() {
 
-    insert(&root, 20);
-    insert(&root, 10);
-    insert(&root, 30);
-    insert(&root, 5);
-    insert(&root, 15);
+//     Node* root = NULL;
 
-    printf("Node's data is %d", root->left->data);
-    return 0;
-}
+//     insert(&root, 20);
+//     insert(&root, 10);
+//     insert(&root, 30);
+//     insert(&root, 5);
+//     insert(&root, 15);
+
+//     printf("Node's data is %d", root->right->data);
+//     return 0;
+// }
