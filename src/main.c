@@ -61,28 +61,28 @@ void insert_user(Node** root, char* username, char* email) {
 
 
 // Fonction pour supprimer un utilisateur
-void delete_user(Node* root, char *query) {
-      // Si la query est "*", on suipprime l'arbre entier.
+void delete_user(Node** root, char *query) {
+    // Si la query est "*", on supprime l'arbre entier.
     if (strcmp(query, "*") == 0) {
-        delete_tree(root);
-        printf("Tous les utilisateurs ont bien été supprimés.");
+        delete_tree(*root);
+        *root = NULL;        // On réinitialise la variable de l'arbre
+        printf("Tous les utilisateurs ont bien été supprimés.\n");
         return;
-    } 
-        // Sinon on supprime l'utilisateur correspondant à l'ID
-        char* endptr;
-        int id = strtol(query, &endptr, 10);
+    }
 
-        if (*endptr != '\0' && *endptr != '\n') {
-            // Si l'id n'est pas de type nombre on retourne une erreur
-            printf("Les seules recherches possibles sont soit tous les utilisateurs ('*'), soit par ID (nombre).\n");
-            return;
-        }
 
-        // On effectue la recherche par ID
-        // delete_by_id(root, id);
-        printf("L'utilisateur correspondant à l'ID %s a bien été supprimé", id);
+    // Sinon on supprime l'utilisateur correspondant à l'ID
+    char* endptr;
+    int id = strtol(query, &endptr, 10);
 
-    return;
+    if (*endptr != '\0' && *endptr != '\n') {
+        // Si l'id n'est pas de type nombre on retourne une erreur
+        printf("Les seules recherches possibles sont soit tous les utilisateurs ('*'), soit par ID (nombre).\n");
+        return;
+    }
+
+    *root = delete_node(*root, id);  // Pass root as a pointer to pointer
+    printf("L'utilisateur correspondant à l'ID %d a bien été supprimé. \n", id);
 }
 
 
@@ -133,7 +133,12 @@ void read_input(char* inputResult, Node** root) {
             break;
         }
         case 3:
-            printf("Deleting row command\n");
+            char* query = strtok(NULL, "\n");
+            if (query != NULL) {
+                delete_user(root, query);  
+            } else {
+                printf("Vous n'avez spécifié aucun ID après votre SELECT, exemple : 'SELECT 3' ou 'SELECT *.\n");
+            }
             break;
         default:
             printf("Commande inconnue, les seules commandes possibles sont : INSERT, SELECT, DELETE.\n");
