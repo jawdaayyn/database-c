@@ -11,13 +11,27 @@ void show_interface() {
 }
 
 
- void read_input(char* inputResult) {
-    scanf("%s", inputResult);
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
 
-    // Tokenize the input and make it uppercase
-    char* token = strtok(inputResult, " - ");
+void read_input(char* inputResult) {
+    // Read the whole line of input
+    if (fgets(inputResult, 256, stdin) == NULL) {
+        printf("Error reading input\n");
+        return;
+    }
+
+    // Tokenize to extract the first word
+    char* token = strtok(inputResult, " ");
+    if (token == NULL) {
+        printf("No input detected\n");
+        return;
+    }
+
+    // Convert the token to uppercase
     for (int i = 0; token[i]; i++) {
-        token[i] = toupper(token[i]);
+        token[i] = toupper((unsigned char)token[i]);
     }
 
     // Determine the command by setting an integer code
@@ -26,6 +40,8 @@ void show_interface() {
         commandCode = 1;
     } else if (strcmp(token, "INSERT") == 0) {
         commandCode = 2;
+    } else if (strcmp(token, "DELETE") == 0) {
+        commandCode = 3;
     }
 
     // Use a switch statement on the integer code
@@ -36,8 +52,11 @@ void show_interface() {
         case 2:
             printf("Inserting row command\n");
             break;
+         case 3:
+            printf("Deleting row command\n");
+            break;
         default:
-            exit(1);  
+            printf("Unrecognized command, try again. Please know that available commands are INSERT, SELECT, DELETE.\n");
             break;
     }
 }
