@@ -1,4 +1,4 @@
-# Projet MYSQL C (TABLE USERS)
+# Projet MYSQL C (TABLE UTILISATEURS)
 
 ## Aperçu
 
@@ -24,17 +24,17 @@ Ce projet est un simulateur simple d'interface en ligne de commande (CLI) pour g
 
 
 ### Lancer le projet
-Cela va créer le fichier à éxecuter pour lancer le programme
+Cela va créer le fichier à éxecuter pour lancer le programme :
 ```bash
 make
 ```
 
-Pour lancer le programme.
+Pour lancer le programme :
 ```bash
 ./mysql
 ```
 
-Pour nettoyer les fichiers.
+Pour nettoyer les fichiers :
 ```bash
 make clean
 ```
