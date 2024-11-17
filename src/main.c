@@ -18,7 +18,7 @@ void select_user(Node* root, char* query) {
         if (root == NULL) {
             printf("Aucun utilisateur trouvé.\n");
         } else {
-            printTree(root);
+            print_tree(root);
         }
         return;
     } 
@@ -33,7 +33,7 @@ void select_user(Node* root, char* query) {
         }
 
         // On effectue la recherche par ID
-        Node* result = searchByID(root, id);
+        Node* result = search_by_id(root, id);
         if (result != NULL) {
            printf("Utilisateur trouvé ID: %d, Nom d'utilisateur: %s, Email: %s\n", result->data.id, result->data.username, result->data.email);
         } else {
@@ -52,7 +52,7 @@ void insert_user(Node** root, char* username, char* email) {
     strcpy(user.email, email);
 
     // Insérer le nouvel utilisateur dans la DB
-    insert(root, user);
+    insert_node(root, user);
 
     // on affiche le nouvel utilisateur créé
     printf("Nouvel utilisateur ajouté à la base de données : { nom d'utilisateur : \"%s\", e-mail: \"%s\" }\n", user.username, user.email);
@@ -61,17 +61,14 @@ void insert_user(Node** root, char* username, char* email) {
 
 
 // Fonction pour supprimer un utilisateur
-void delete(Node* root, char *query) {
+void delete_user(Node* root, char *query) {
       // Si la query est "*", on suipprime l'arbre entier.
     if (strcmp(query, "*") == 0) {
-        if (root == NULL) {
-            printf("Aucun utilisateur trouvé.\n");
-        } else {
-            printTree(root);
-        }
+        delete_tree(root);
+        printf("Tous les utilisateurs ont bien été supprimés.");
         return;
     } 
-        // Sinon on retourne l'utilisateur correspondant à l'ID
+        // Sinon on supprime l'utilisateur correspondant à l'ID
         char* endptr;
         int id = strtol(query, &endptr, 10);
 
@@ -82,40 +79,30 @@ void delete(Node* root, char *query) {
         }
 
         // On effectue la recherche par ID
-        Node* result = searchByID(root, id);
-        if (result != NULL) {
-           printf("Utilisateur trouvé ID: %d, Nom d'utilisateur: %s, Email: %s\n", result->data.id, result->data.username, result->data.email);
-        } else {
-            printf("Aucun utilisateur trouvé correspondant à l'ID %d.\n", id);
-        }
+        // delete_by_id(root, id);
+        printf("L'utilisateur correspondant à l'ID %s a bien été supprimé", id);
 
     return;
 }
 
 
 
-void read_input(char* inputResult, Node* root) {
-    // On lit l'input
+void read_input(char* inputResult, Node** root) { 
     if (fgets(inputResult, 256, stdin) == NULL) {
         printf("Erreur lors de la lecture de l'input.\n");
         return;
     }
 
-    // On assigne le premier mot de l'input dans une variable
     char* token = strtok(inputResult, " ");
     if (token == NULL) {
         printf("Aucune commande donnée.\n");
         return;
     }
 
-    // On le met en majuscule pour formatter la commande 
     for (int i = 0; token[i]; i++) {
         token[i] = toupper((unsigned char)token[i]);
     }
 
-
-
-    // On va assigner la commande à utiliser grâce au token
     int commandCode = -1;
     if (strcmp(token, "SELECT") == 0) {
         commandCode = 1;
@@ -125,34 +112,27 @@ void read_input(char* inputResult, Node* root) {
         commandCode = 3;
     }
 
-    // On utilise un switch case pour vérifier efficacement la méthode à utiliser pour la requête SQL
     switch (commandCode) {
-        case 1:
-
-            // ici on parse la query
+        case 1: {
             char* query = strtok(NULL, "\n");
-
-            // si une query est bien présente on effectue la recherche
             if (query != NULL) {
-                select_user(root, query);
+                select_user(*root, query);  
             } else {
                 printf("Vous n'avez spécifié aucun ID après votre SELECT, exemple : 'SELECT 3' ou 'SELECT *.\n");
             }
-            break;    
+            break;
+        }
         case 2: {
-            // On parse le username et l'email
             char* username = strtok(NULL, " ");
             char* email = strtok(NULL, "\n");
-
-            // si l'username et l'email sont bien présent alors on peut insérer l'utilisateur
             if (username != NULL && email != NULL) {
-                insert_user(&root, username, email);
+                insert_user(root, username, email);  
             } else {
                 printf("Format incorrect. Exemple : 'INSERT test test@gmail.com'\n");
             }
             break;
         }
-         case 3:
+        case 3:
             printf("Deleting row command\n");
             break;
         default:
@@ -162,25 +142,14 @@ void read_input(char* inputResult, Node* root) {
 }
 
 
-
 void main(int argc, char* argv[], char* envp[]){
     char inputResult[30];
-
     // noeud initial
     Node* root = NULL;
 
-    User user1 = {"Jawdan", "jawdan@gmail.com"}; 
-    User user2 = {"Test", "test@gmail.com"};    
-    User user3 = {"Mike", "mike@gmail.com"}; 
-
-    insert(&root, user1);
-    insert(&root, user2);
-    insert(&root, user3);
-
-
     while (true) {  
     show_interface();
-    read_input(inputResult, root);
+    read_input(inputResult, &root);
     }
   
 }

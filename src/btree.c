@@ -19,10 +19,10 @@ typedef struct Node {
 } Node;
 
 // Prochain ID qui va être utilisé lors d'une création d'un utilisateur
-int nextID = 1; 
+int nextID = 0; 
 
 // Fonction pour créer un noeud
-Node* createNode(User data) {
+Node* create_node(User data) {
     
 
     // On alloue la mémoire
@@ -40,10 +40,10 @@ Node* createNode(User data) {
     return newNode;
 }
 
-void insert(Node** root, User data) {
+void insert_node(Node** root, User data) {
     // Ici on génère automatiquement l'id du nouveau noeud
     data.id = nextID++; 
-    Node* newNode = createNode(data);
+    Node* newNode = create_node(data);
     if (*root == NULL) {
         // si c'est le premier noeud pas besoin de le placer dans l'arbre
         *root = newNode;
@@ -77,25 +77,45 @@ void insert(Node** root, User data) {
     }
 }
 
-void printTree(Node* root) {
+// Fonction récursive pour supprimer l'arbre entier
+void delete_tree(Node* root) {
+
+    // s'il n'y a pas de noeud on arrête.
+    if (root == NULL) {
+        return;
+    }
+
+    // on supprime les enfant à gauche du noeud
+    delete_tree(root->left);
+    // on supprime les enfant à gauche du noeud
+    delete_tree(root->right);
+
+    // on libère la mémoire de ce noeud
+    free(root);
+}
+
+void print_tree(Node* root) {
     if (root != NULL) {
         // Cette méthode permet de chercher à la fois les éléments d'à droite de l'arbre et d'à gauche, donc tous les éléments seront montrés.
-        printTree(root->left);
-        printf("ID: %d, Username: %s, Email: %s\n",
+        print_tree(root->left);
+        printf("ID: %d, Nom d'utilisateur: %s, E-mail: %s\n",
                root->data.id, root->data.username, root->data.email);
-        printTree(root->right);
+        print_tree(root->right);
     }
 }
 
-Node* searchByID(Node* root, int id) {
+
+
+
+Node* search_by_id(Node* root, int id) {
     if (root == NULL || root->data.id == id) {
         return root; // Fin de la recherche => Soit un élément est trouvé soit rien.
     }
 
     if (id < root->data.id) {
-        return searchByID(root->left, id); // Chercher à gauche
+        return search_by_id(root->left, id); // Chercher à gauche
     } else {
-        return searchByID(root->right, id); // Chercher à droite
+        return search_by_id(root->right, id); // Chercher à droite
     }
 }
 
