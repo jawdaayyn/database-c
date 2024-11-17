@@ -1,23 +1,53 @@
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-typedef struct node {
-    int data;
-    struct node *left;
-    struct node *right;
+
+// Type du user
+typedef struct User {
+    char username[50];
+    char email[100];
+    int id;
+} User;
+
+
+// Type du noeud dans l'arbre
+typedef struct Node {
+    User data;
+    struct Node* left;
+    struct Node* right;
 } Node;
 
-Node* createNode(int data) {
+// Prochain ID qui va être utilisé lors d'une création d'un utilisateur
+int nextID = 1; 
+
+// Fonction pour créer un noeud
+Node* createNode(User data) {
+    
+
+    // On alloue la mémoire
     Node* newNode = (Node*)malloc(sizeof(Node));
+    if (newNode == NULL) {
+        // Si on a pas réussi à allouer de la mémoire
+        exit(1);
+    }
+
+
+    // On assigne ce qu'on va mettre dans le noeud
     newNode->data = data;
     newNode->left = NULL;
     newNode->right = NULL;
     return newNode;
 }
 
-void insert(Node** root, int data) {
-    Node* newNode = createNode(data);  
-    if (*root == NULL) { 
+void insert(Node** root, User data) {
+
+
+    // Ici on génère automatiquement l'id du nouveau noeud
+    data.id = nextID++; 
+    Node* newNode = createNode(data);
+    if (*root == NULL) {
+        // si c'est le premier noeud pas besoin de le placer dans l'arbre
         *root = newNode;
         return;
     }
@@ -25,37 +55,74 @@ void insert(Node** root, int data) {
     Node* current = *root;
     Node* parent = NULL;
 
+    // Ici on cherche où placer le noeud dans le BST
+
+
+// tant que le noeud où placer l'élément n'existe pas on continue à chercher l'endroit où le placer
     while (current != NULL) {
         parent = current;
-
-        if (data < current->data) { 
+        // si l'id du nouvel élément est inférieur à l'élément actuel on cherche à gauche
+        if (data.id < current->data.id) {
             current = current->left;
             if (current == NULL) {
-                parent->left = newNode;  
+                parent->left = newNode;
                 break;
             }
-        } else { 
+        // sinon on cherche à droite
+        } else {
             current = current->right;
             if (current == NULL) {
-                parent->right = newNode;  
+                parent->right = newNode;
                 break;
             }
         }
     }
-
-    return;
 }
 
-// int main() {
+void printTree(Node* root) {
+    if (root != NULL) {
+        // Cette méthode permet de chercher à la fois les éléments d'à droite de l'arbre et d'à gauche, donc tous les éléments seront montrés.
+        printTree(root->left);
+        printf("ID: %d, Username: %s, Email: %s\n",
+               root->data.id, root->data.username, root->data.email);
+        printTree(root->right);
+    }
+}
 
-//     Node* root = NULL;
+Node* searchByID(Node* root, int id) {
+    if (root == NULL || root->data.id == id) {
+        return root; // Fin de la recherche => Soit un élément est trouvé soit rien.
+    }
 
-//     insert(&root, 20);
-//     insert(&root, 10);
-//     insert(&root, 30);
-//     insert(&root, 5);
-//     insert(&root, 15);
+    if (id < root->data.id) {
+        return searchByID(root->left, id); // Chercher à gauche
+    } else {
+        return searchByID(root->right, id); // Chercher à droite
+    }
+}
 
-//     printf("Node's data is %d", root->right->data);
-//     return 0;
-// }
+
+int main() {
+    Node* root = NULL;
+
+    User user1 = {"Jawdan", "jawdan@gmail.com"}; 
+    User user2 = {"Test", "test@gmail.com"};    
+    User user3 = {"Mike", "mike@gmail.com"}; 
+
+    insert(&root, user1);
+    insert(&root, user2);
+    insert(&root, user3);
+
+
+    int idToSearch = 5; 
+    Node* result = searchByID(root, idToSearch);
+
+ if (result != NULL) {
+        printf("Utilisateur trouvé ID: %d, Nom d'utilisateur: %s, Email: %s\n",
+               result->data.id, result->data.username, result->data.email);
+    } else {
+        printf("Pas d'utilisateur trouvé avec l'ID %d.\n", idToSearch);
+    }
+
+    return 0;
+}
