@@ -24,18 +24,20 @@ Ce projet est un simulateur simple d'interface en ligne de commande (CLI) pour g
 
 
 ### Lancer le projet
+Cela va créer le fichier à éxecuter pour lancer le programme
 ```bash
 make
 ```
-Cela va créer le fichier à éxecuter pour lancer le programme
+
+Pour lancer le programme.
 ```bash
 ./mysql
 ```
-Pour lancer le programme.
+
+Pour nettoyer les fichiers.
 ```bash
 make clean
 ```
-Pour nettoyer les fichiers.
 
 ### Exemple d'utilisation
 
