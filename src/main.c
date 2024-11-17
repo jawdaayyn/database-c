@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "btree.c"
+#include "btree.h"
 #include <stdbool.h>
 #include <string.h>
 #include <ctype.h>
@@ -148,7 +148,7 @@ void read_input(char* inputResult, Node** root) {
 }
 
 
-int main(int argc, char* argv[], char* envp[]) {
+int main() {
     char inputResult[30];
     // noeud initial
     Node* root = NULL;

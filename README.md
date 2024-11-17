@@ -21,6 +21,22 @@ Ce projet est un simulateur simple d'interface en ligne de commande (CLI) pour g
 - **`DELETE *`** : Supprime tous les utilisateurs du système.
 - **`DELETE [ID]`** : Supprime l'utilisateur avec l'ID spécifié.
 
+
+
+### Lancer le projet
+```bash
+make
+```
+Cela va créer le fichier à éxecuter pour lancer le programme
+```bash
+./mysql
+```
+Pour lancer le programme.
+```bash
+make clean
+```
+Pour nettoyer les fichiers.
+
 ### Exemple d'utilisation
 
 ```bash

@@ -35,6 +35,7 @@
 *.i*86
 *.x86_64
 *.hex
+mysql
 
 # Debug files
 *.dSYM/
@@ -54,4 +55,3 @@ dkms.conf
 
 # IDE Files
 .vscode
-CCI.pdf
