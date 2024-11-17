@@ -5,6 +5,7 @@
 #include <string.h>
 #include <ctype.h>
 
+
 // Fonction pour afficher le mysql au début
 void show_interface() {
   printf("mysql>");
@@ -147,7 +148,7 @@ void read_input(char* inputResult, Node** root) {
 }
 
 
-void main(int argc, char* argv[], char* envp[]){
+int main(int argc, char* argv[], char* envp[]) {
     char inputResult[30];
     // noeud initial
     Node* root = NULL;
@@ -156,5 +157,5 @@ void main(int argc, char* argv[], char* envp[]){
     show_interface();
     read_input(inputResult, &root);
     }
-  
+    return 0;
 }
