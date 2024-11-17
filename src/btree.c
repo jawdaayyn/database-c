@@ -41,8 +41,6 @@ Node* createNode(User data) {
 }
 
 void insert(Node** root, User data) {
-
-
     // Ici on génère automatiquement l'id du nouveau noeud
     data.id = nextID++; 
     Node* newNode = createNode(data);

@@ -5,19 +5,14 @@
 #include <string.h>
 #include <ctype.h>
 
+// Fonction pour afficher le mysql au début
 void show_interface() {
   printf("mysql>");
   return;
 }
 
-
-#include <stdio.h>
-#include <string.h>
-#include <ctype.h>
-
-
+// Fonction pour rechercher un utilisateur
 void select_user(Node* root, char* query) {
-  
     // Si la query est "*", on retourne l'arbre entier.
     if (strcmp(query, "*") == 0) {
         if (root == NULL) {
@@ -44,6 +39,57 @@ void select_user(Node* root, char* query) {
         } else {
             printf("Aucun utilisateur trouvé correspondant à l'ID %d.\n", id);
         }
+
+    return;
+}
+
+// Fonction pour créer un utilisateur
+void insert_user(Node** root, char* username, char* email) {
+    User user;
+
+    // ici on copie les username et email dans l'username et email du nouvel utilisateur
+    strcpy(user.username, username);
+    strcpy(user.email, email);
+
+    // Insérer le nouvel utilisateur dans la DB
+    insert(root, user);
+
+    // on affiche le nouvel utilisateur créé
+    printf("Nouvel utilisateur ajouté à la base de données : { nom d'utilisateur : \"%s\", e-mail: \"%s\" }\n", user.username, user.email);
+    return;
+}
+
+
+// Fonction pour supprimer un utilisateur
+void delete(Node* root, char *query) {
+      // Si la query est "*", on suipprime l'arbre entier.
+    if (strcmp(query, "*") == 0) {
+        if (root == NULL) {
+            printf("Aucun utilisateur trouvé.\n");
+        } else {
+            printTree(root);
+        }
+        return;
+    } 
+        // Sinon on retourne l'utilisateur correspondant à l'ID
+        char* endptr;
+        int id = strtol(query, &endptr, 10);
+
+        if (*endptr != '\0' && *endptr != '\n') {
+            // Si l'id n'est pas de type nombre on retourne une erreur
+            printf("Les seules recherches possibles sont soit tous les utilisateurs ('*'), soit par ID (nombre).\n");
+            return;
+        }
+
+        // On effectue la recherche par ID
+        Node* result = searchByID(root, id);
+        if (result != NULL) {
+           printf("Utilisateur trouvé ID: %d, Nom d'utilisateur: %s, Email: %s\n", result->data.id, result->data.username, result->data.email);
+        } else {
+            printf("Aucun utilisateur trouvé correspondant à l'ID %d.\n", id);
+        }
+
+    return;
 }
 
 
@@ -82,17 +128,30 @@ void read_input(char* inputResult, Node* root) {
     // On utilise un switch case pour vérifier efficacement la méthode à utiliser pour la requête SQL
     switch (commandCode) {
         case 1:
+
+            // ici on parse la query
             char* query = strtok(NULL, "\n");
+
+            // si une query est bien présente on effectue la recherche
             if (query != NULL) {
                 select_user(root, query);
             } else {
                 printf("Vous n'avez spécifié aucun ID après votre SELECT, exemple : 'SELECT 3' ou 'SELECT *.\n");
             }
-            break;
+            break;    
+        case 2: {
+            // On parse le username et l'email
+            char* username = strtok(NULL, " ");
+            char* email = strtok(NULL, "\n");
 
-        case 2:
-            printf("Inserting row command\n");
+            // si l'username et l'email sont bien présent alors on peut insérer l'utilisateur
+            if (username != NULL && email != NULL) {
+                insert_user(&root, username, email);
+            } else {
+                printf("Format incorrect. Exemple : 'INSERT test test@gmail.com'\n");
+            }
             break;
+        }
          case 3:
             printf("Deleting row command\n");
             break;
