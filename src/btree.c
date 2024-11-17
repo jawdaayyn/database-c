@@ -101,28 +101,3 @@ Node* searchByID(Node* root, int id) {
     }
 }
 
-
-// int main() {
-//     Node* root = NULL;
-
-//     User user1 = {"Jawdan", "jawdan@gmail.com"}; 
-//     User user2 = {"Test", "test@gmail.com"};    
-//     User user3 = {"Mike", "mike@gmail.com"}; 
-
-//     insert(&root, user1);
-//     insert(&root, user2);
-//     insert(&root, user3);
-
-
-//     int idToSearch = 5; 
-//     Node* result = searchByID(root, idToSearch);
-
-//  if (result != NULL) {
-//         printf("Utilisateur trouvé ID: %d, Nom d'utilisateur: %s, Email: %s\n",
-//                result->data.id, result->data.username, result->data.email);
-//     } else {
-//         printf("Pas d'utilisateur trouvé avec l'ID %d.\n", idToSearch);
-//     }
-
-//     return 0;
-// }
