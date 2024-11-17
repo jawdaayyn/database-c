@@ -43,10 +43,10 @@ make clean
 
 ```bash
 mysql> INSERT testuser testuser@example.com
-Nouvel utilisateur ajouté à la base de données : { nom d'utilisateur : "testuser", e-mail: "testuser@example.com" }
+- Nouvel utilisateur ajouté à la base de données : { nom d'utilisateur : "testuser", e-mail: "testuser@example.com" 
 
 mysql> SELECT *
-Utilisateur trouvé ID: 1, Nom d'utilisateur: testuser, Email: testuser@example.com
+- Utilisateur trouvé ID: 1, Nom d'utilisateur: testuser, Email: testuser@example.com
 
 mysql> DELETE 1
-L'utilisateur correspondant à l'ID 1 a bien été supprimé.
+- L'utilisateur correspondant à l'ID 1 a bien été supprimé.
