@@ -1,4 +1,4 @@
-# Projet MYSQL C (TABLE UTILISATEURS)
+# Projet MYSQL C (TABLE UTILISATEURS) - Jawdan Akkari
 
 ## Aperçu
 
